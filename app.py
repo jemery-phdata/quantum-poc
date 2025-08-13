@@ -237,25 +237,25 @@ search_query = st.text_input("", placeholder="Search apps...", key="search", lab
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
 
-# Featured Apps Cards - Real working Streamlit apps
+# Featured Apps Cards - Verified working Streamlit apps
 featured_apps = [
     {
-        "title": "Guess the Country",
-        "description": "Interactive geography game - guess countries by their outline",
-        "icon": "🌍",
-        "url": "https://gerardrbentley-streamlit-worldle-worldle-0j1j0j.streamlit.app/"
+        "title": "NYC Uber Rides",
+        "description": "Interactive map showing Uber pickups in NYC",
+        "icon": "🚗",
+        "url": "https://share.streamlit.io/streamlit/demo-uber-nyc-pickups/main"
     },
     {
-        "title": "Brainstorming Buddy", 
-        "description": "AI-powered idea generator using GPT-3",
-        "icon": "💡",
-        "url": "https://ayoubnini-brainstorming-buddy-app-0j1j0j.streamlit.app/"
+        "title": "Stock Price Tracker", 
+        "description": "S&P 500 stock prices and company info",
+        "icon": "📈",
+        "url": "https://share.streamlit.io/dataprofessor/sp500-app/main/sp500-app.py"
     },
     {
-        "title": "Color-coded Writing",
-        "description": "Text analysis tool that color-codes by sentence length",
-        "icon": "🎨",
-        "url": "https://johannesrieke-color-coded-writing.streamlit.app/"
+        "title": "Data Professor Links",
+        "description": "Personal link hub and resource collection",
+        "icon": "🔗",
+        "url": "https://dataprofessor-links.streamlit.app/"
     }
 ]
 
@@ -277,40 +277,40 @@ st.markdown('<h2 class="section-header">All Apps</h2>', unsafe_allow_html=True)
 
 all_apps = [
     {
-        "title": "Links Page",
-        "description": "Personal link aggregator similar to Linktree",
-        "icon": "🔗",
-        "url": "https://dataprofessor-links.streamlit.app/"
+        "title": "Streamlit Gallery",
+        "description": "Official showcase of amazing Streamlit apps",
+        "icon": "🎨",
+        "url": "https://streamlit.io/gallery"
     },
     {
-        "title": "Constellation Explorer", 
-        "description": "Satellite constellation transit schedules over Earth",
-        "icon": "🛰️",
-        "url": "https://pritishc-constellation-explorer.streamlit.app/"
+        "title": "30 Days of Streamlit", 
+        "description": "Learn Streamlit with daily challenges",
+        "icon": "📚",
+        "url": "https://30days.streamlit.app/"
     },
     {
-        "title": "Uber Pickups NYC",
-        "description": "Interactive map of Uber pickups in New York City",
-        "icon": "🚗",
-        "url": "https://share.streamlit.io/streamlit/demo-uber-nyc-pickups"
+        "title": "Streamlit Docs",
+        "description": "Complete API reference and tutorials",
+        "icon": "📖",
+        "url": "https://docs.streamlit.io/"
     },
     {
-        "title": "Stock Price App",
-        "description": "Real-time stock price visualization and analysis",
-        "icon": "📈", 
-        "url": "https://share.streamlit.io/dataprofessor/sp500-app/main/sp500-app.py"
+        "title": "Palmer Penguins",
+        "description": "Data visualization with penguin dataset",
+        "icon": "🐧", 
+        "url": "https://share.streamlit.io/streamlit/example-app-penguins/main"
     },
     {
-        "title": "COVID-19 Dashboard",
-        "description": "Interactive COVID-19 data visualization",
-        "icon": "🦠",
-        "url": "https://share.streamlit.io/holtzy/The-Python-Graph-Gallery/master/src/notebooks/matplotlib_streamlit.py"
+        "title": "Self-Driving Car",
+        "description": "Computer vision demo with YOLO object detection",
+        "icon": "🚙",
+        "url": "https://share.streamlit.io/streamlit/demo-self-driving/main"
     },
     {
-        "title": "Machine Learning Demo",
-        "description": "Interactive ML model training and prediction",
-        "icon": "🤖",
-        "url": "https://share.streamlit.io/streamlit/demo-face-gan"
+        "title": "Fractal Explorer",
+        "description": "Interactive mathematical fractal generator",
+        "icon": "🌀",
+        "url": "https://share.streamlit.io/streamlit/demo-fractal/main"
     }
 ]
 
