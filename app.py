@@ -221,18 +221,15 @@ st.markdown("""
 # Main content container
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
-# Search bar
-st.markdown("""
-<div class="search-container">
-    <div style="position: relative;">
-        <input type="text" placeholder="Search apps..." class="search-input" style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #f0f0f0; border-radius: 25px; font-size: 1.1rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-        <span class="search-icon" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999; font-size: 1.2rem;">🔍</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
 # Search functionality
-search_query = st.text_input("", placeholder="Search apps...", key="search", label_visibility="collapsed")
+st.markdown("### 🔍 Search Apps")
+search_query = st.text_input("Type to search apps by name or description...", placeholder="e.g., documentation, gallery, community", key="search", label_visibility="collapsed")
+
+# Show search results info
+if search_query:
+    st.markdown(f"🔍 **Search results for:** *{search_query}*")
+else:
+    st.markdown("📋 **Showing all apps** - Use the search box above to filter")
 
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
@@ -246,86 +243,109 @@ featured_apps = [
         "url": "https://share.streamlit.io/streamlit/demo-uber-nyc-pickups/main"
     },
     {
-        "title": "Stock Price Tracker", 
-        "description": "S&P 500 stock prices and company info",
-        "icon": "📈",
-        "url": "https://share.streamlit.io/dataprofessor/sp500-app/main/sp500-app.py"
-    },
-    {
-        "title": "Data Professor Links",
-        "description": "Personal link hub and resource collection",
-        "icon": "🔗",
-        "url": "https://dataprofessor-links.streamlit.app/"
-    }
-]
-
-# Create featured apps grid
-cols = st.columns(3)
-for i, app in enumerate(featured_apps):
-    with cols[i]:
-        st.markdown(f"""
-        <div class="app-card">
-            <div class="app-icon">{app['icon']}</div>
-            <div class="app-title">{app['title']}</div>
-            <div class="app-description">{app['description']}</div>
-            <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
-        </div>
-        """, unsafe_allow_html=True)
-
-# All Apps Section
-st.markdown('<h2 class="section-header">All Apps</h2>', unsafe_allow_html=True)
-
-all_apps = [
-    {
-        "title": "Streamlit Gallery",
-        "description": "Official showcase of amazing Streamlit apps",
+        "title": "Streamlit Gallery", 
+        "description": "Official showcase of amazing Streamlit applications",
         "icon": "🎨",
         "url": "https://streamlit.io/gallery"
     },
     {
-        "title": "30 Days of Streamlit", 
-        "description": "Learn Streamlit with daily challenges",
+        "title": "30 Days Challenge",
+        "description": "Learn Streamlit in 30 days with daily tutorials",
         "icon": "📚",
         "url": "https://30days.streamlit.app/"
-    },
+    }
+]
+
+
+
+all_apps = [
     {
-        "title": "Streamlit Docs",
+        "title": "Streamlit Documentation",
         "description": "Complete API reference and tutorials",
         "icon": "📖",
         "url": "https://docs.streamlit.io/"
     },
     {
-        "title": "Palmer Penguins",
-        "description": "Data visualization with penguin dataset",
-        "icon": "🐧", 
-        "url": "https://share.streamlit.io/streamlit/example-app-penguins/main"
+        "title": "Streamlit Community", 
+        "description": "Join the Streamlit community forum",
+        "icon": "👥",
+        "url": "https://discuss.streamlit.io/"
     },
     {
-        "title": "Self-Driving Car",
-        "description": "Computer vision demo with YOLO object detection",
-        "icon": "🚙",
-        "url": "https://share.streamlit.io/streamlit/demo-self-driving/main"
+        "title": "GitHub Repository",
+        "description": "Streamlit open source code on GitHub",
+        "icon": "💻",
+        "url": "https://github.com/streamlit/streamlit"
     },
     {
-        "title": "Fractal Explorer",
-        "description": "Interactive mathematical fractal generator",
-        "icon": "🌀",
-        "url": "https://share.streamlit.io/streamlit/demo-fractal/main"
+        "title": "Streamlit Blog",
+        "description": "Latest news and tutorials from Streamlit",
+        "icon": "📝", 
+        "url": "https://blog.streamlit.io/"
+    },
+    {
+        "title": "Component Gallery",
+        "description": "Third-party Streamlit components",
+        "icon": "🧩",
+        "url": "https://streamlit.io/components"
+    },
+    {
+        "title": "Streamlit Cloud",
+        "description": "Deploy and share your Streamlit apps",
+        "icon": "☁️",
+        "url": "https://share.streamlit.io/"
     }
 ]
 
+# Combine all apps for searching
+all_searchable_apps = featured_apps + all_apps
+
 # Filter apps based on search
 if search_query:
-    filtered_apps = [app for app in all_apps if search_query.lower() in app['title'].lower() or search_query.lower() in app['description'].lower()]
+    filtered_apps = [app for app in all_searchable_apps if search_query.lower() in app['title'].lower() or search_query.lower() in app['description'].lower()]
+    
+    if filtered_apps:
+        st.markdown(f"### Found {len(filtered_apps)} app(s)")
+        # Create rows of 3 apps each
+        for i in range(0, len(filtered_apps), 3):
+            cols = st.columns(3)
+            for j, app in enumerate(filtered_apps[i:i+3]):
+                if j < len(filtered_apps[i:i+3]):  # Make sure we don't exceed the list
+                    with cols[j]:
+                        st.markdown(f"""
+                        <div class="app-card">
+                            <div class="app-icon">{app['icon']}</div>
+                            <div class="app-title">{app['title']}</div>
+                            <div class="app-description">{app['description']}</div>
+                            <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
+                        </div>
+                        """, unsafe_allow_html=True)
+    else:
+        st.markdown("### ❌ No apps found matching your search")
+        st.markdown("Try searching for: *gallery*, *documentation*, *community*, *uber*, or *30 days*")
+        
 else:
-    filtered_apps = all_apps
+    # Show featured apps section normally when not searching
+    # Create featured apps grid
+    cols = st.columns(3)
+    for i, app in enumerate(featured_apps):
+        with cols[i]:
+            st.markdown(f"""
+            <div class="app-card">
+                <div class="app-icon">{app['icon']}</div>
+                <div class="app-title">{app['title']}</div>
+                <div class="app-description">{app['description']}</div>
+                <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
+            </div>
+            """, unsafe_allow_html=True)
 
-# Create grid for all apps
-if filtered_apps:
+    # All Apps Section (when not searching)
+    st.markdown('<h2 class="section-header">All Apps</h2>', unsafe_allow_html=True)
+    
     # Create rows of 3 apps each
-    for i in range(0, len(filtered_apps), 3):
+    for i in range(0, len(all_apps), 3):
         cols = st.columns(3)
-        for j, app in enumerate(filtered_apps[i:i+3]):
+        for j, app in enumerate(all_apps[i:i+3]):
             with cols[j]:
                 st.markdown(f"""
                 <div class="app-card">
@@ -335,8 +355,6 @@ if filtered_apps:
                     <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
                 </div>
                 """, unsafe_allow_html=True)
-else:
-    st.markdown("### No apps found matching your search criteria.")
 
 # AI Chat Section (if activated)
 if st.button("🤖 Launch AI Assistant", key="ai_chat"):
