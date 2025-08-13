@@ -50,8 +50,8 @@ st.markdown("""
     /* Custom header bar */
     .custom-header {
         background: #ED008C;
-        padding: 1rem 2rem;
-        margin: -1rem -1rem 2rem -1rem;
+        padding: 1.5rem 4rem;
+        margin: -1rem -1rem 3rem -1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -60,37 +60,51 @@ st.markdown("""
         left: 0;
         right: 0;
         z-index: 999;
-        height: 80px;
+        height: 90px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .header-title {
         color: white;
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-weight: 700;
         margin: 0;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
     }
     
     .header-user {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
         color: white;
         font-weight: 500;
+        font-size: 1.1rem;
     }
     
     .user-avatar {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         border: 2px solid white;
     }
     
-    /* Main content with top margin */
+    /* Main content with top margin and side padding */
     .main-content {
-        margin-top: 100px;
-        padding: 2rem;
+        margin-top: 120px;
+        padding: 3rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Add responsive padding for smaller screens */
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 2rem 1.5rem;
+        }
+        .custom-header {
+            padding: 1rem 2rem;
+        }
     }
     
     /* Search bar styling */
@@ -188,17 +202,31 @@ st.markdown("""
     
     /* Section headers */
     .section-header {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: 600;
         color: #333;
-        margin: 2rem 0 1rem 0;
+        margin: 4rem 0 2rem 0;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
     }
     
     /* Grid layout */
     .app-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    /* Search section styling */
+    .search-section {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    /* Add more spacing between app rows */
+    .app-row {
         margin-bottom: 2rem;
     }
 </style>
@@ -222,6 +250,7 @@ st.markdown("""
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
 # Search functionality
+st.markdown('<div class="search-section">', unsafe_allow_html=True)
 st.markdown("### 🔍 Search Apps")
 search_query = st.text_input("Type to search apps by name or description...", placeholder="e.g., documentation, gallery, community", key="search", label_visibility="collapsed")
 
@@ -230,6 +259,7 @@ if search_query:
     st.markdown(f"🔍 **Search results for:** *{search_query}*")
 else:
     st.markdown("📋 **Showing all apps** - Use the search box above to filter")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
@@ -306,8 +336,10 @@ if search_query:
     
     if filtered_apps:
         st.markdown(f"### Found {len(filtered_apps)} app(s)")
+        st.markdown("")  # Add spacing
         # Create rows of 3 apps each
         for i in range(0, len(filtered_apps), 3):
+            st.markdown('<div class="app-row">', unsafe_allow_html=True)
             cols = st.columns(3)
             for j, app in enumerate(filtered_apps[i:i+3]):
                 if j < len(filtered_apps[i:i+3]):  # Make sure we don't exceed the list
@@ -320,13 +352,16 @@ if search_query:
                             <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
                         </div>
                         """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
     else:
         st.markdown("### ❌ No apps found matching your search")
         st.markdown("Try searching for: *gallery*, *documentation*, *community*, *uber*, or *30 days*")
         
 else:
     # Show featured apps section normally when not searching
+    st.markdown("")  # Add spacing
     # Create featured apps grid
+    st.markdown('<div class="app-row">', unsafe_allow_html=True)
     cols = st.columns(3)
     for i, app in enumerate(featured_apps):
         with cols[i]:
@@ -338,12 +373,14 @@ else:
                 <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
             </div>
             """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # All Apps Section (when not searching)
     st.markdown('<h2 class="section-header">All Apps</h2>', unsafe_allow_html=True)
     
     # Create rows of 3 apps each
     for i in range(0, len(all_apps), 3):
+        st.markdown('<div class="app-row">', unsafe_allow_html=True)
         cols = st.columns(3)
         for j, app in enumerate(all_apps[i:i+3]):
             with cols[j]:
@@ -355,6 +392,7 @@ else:
                     <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
                 </div>
                 """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # AI Chat Section (if activated)
 if st.button("🤖 Launch AI Assistant", key="ai_chat"):
