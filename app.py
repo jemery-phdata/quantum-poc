@@ -331,59 +331,6 @@ if st.session_state.get("ai_chat_active", False):
     
     st.markdown("---")
 
-# Tableau Dashboards Section
-st.markdown('<h2 class="section-header">📊 Tableau Analytics Hub</h2>', unsafe_allow_html=True)
-
-# Tableau dashboard cards
-tableau_dashboards = [
-    {
-        "title": "Executive Dashboard",
-        "description": "High-level KPIs and business metrics overview",
-        "icon": "📈",
-        "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/RegionalSampleWorkbook/Storms"
-    },
-    {
-        "title": "Sales Performance",
-        "description": "Detailed sales analytics and forecasting",
-        "icon": "🎯",
-        "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/SuperstoreSample/Overview"
-    },
-    {
-        "title": "Financial Analytics",
-        "description": "Revenue, profit, and financial trend analysis",
-        "icon": "💰",
-        "url": "https://public.tableau.com/gallery"
-    }
-]
-
-# Create tableau dashboard grid
-st.markdown('<div class="app-row">', unsafe_allow_html=True)
-tableau_cols = st.columns(3)
-for i, dashboard in enumerate(tableau_dashboards):
-    with tableau_cols[i]:
-        st.markdown(f"""
-        <div class="app-card">
-            <div class="app-icon">{dashboard['icon']}</div>
-            <div class="app-title">{dashboard['title']}</div>
-            <div class="app-description">{dashboard['description']}</div>
-            <a href="{dashboard['url']}" target="_blank" class="launch-button">View Dashboard</a>
-        </div>
-        """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Sample metrics for Tableau section
-st.markdown("#### Key Business Metrics")
-metric_cols = st.columns(4)
-
-with metric_cols[0]:
-    st.metric("Revenue", "$2.5M", "12%")
-with metric_cols[1]:
-    st.metric("Active Users", "15,432", "8%") 
-with metric_cols[2]:
-    st.metric("Conversion Rate", "3.2%", "0.5%")
-with metric_cols[3]:
-    st.metric("Satisfaction", "4.7/5", "0.2")
-
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
 
@@ -497,6 +444,59 @@ else:
             </div>
             """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # Tableau Dashboards Section
+    st.markdown('<h2 class="section-header">📊 Tableau Analytics Hub</h2>', unsafe_allow_html=True)
+
+    # Tableau dashboard cards
+    tableau_dashboards = [
+        {
+            "title": "Executive Dashboard",
+            "description": "High-level KPIs and business metrics overview",
+            "icon": "📈",
+            "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/RegionalSampleWorkbook/Storms"
+        },
+        {
+            "title": "Sales Performance",
+            "description": "Detailed sales analytics and forecasting",
+            "icon": "🎯",
+            "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/SuperstoreSample/Overview"
+        },
+        {
+            "title": "Financial Analytics",
+            "description": "Revenue, profit, and financial trend analysis",
+            "icon": "💰",
+            "url": "https://public.tableau.com/gallery"
+        }
+    ]
+
+    # Create tableau dashboard grid
+    st.markdown('<div class="app-row">', unsafe_allow_html=True)
+    tableau_cols = st.columns(3)
+    for i, dashboard in enumerate(tableau_dashboards):
+        with tableau_cols[i]:
+            st.markdown(f"""
+            <div class="app-card">
+                <div class="app-icon">{dashboard['icon']}</div>
+                <div class="app-title">{dashboard['title']}</div>
+                <div class="app-description">{dashboard['description']}</div>
+                <a href="{dashboard['url']}" target="_blank" class="launch-button">View Dashboard</a>
+            </div>
+            """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Sample metrics for Tableau section
+    st.markdown("#### Key Business Metrics")
+    metric_cols = st.columns(4)
+
+    with metric_cols[0]:
+        st.metric("Revenue", "$2.5M", "12%")
+    with metric_cols[1]:
+        st.metric("Active Users", "15,432", "8%") 
+    with metric_cols[2]:
+        st.metric("Conversion Rate", "3.2%", "0.5%")
+    with metric_cols[3]:
+        st.metric("Satisfaction", "4.7/5", "0.2")
 
     # All Apps Section (when not searching)
     st.markdown('<h2 class="section-header">All Apps</h2>', unsafe_allow_html=True)
