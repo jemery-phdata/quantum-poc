@@ -272,17 +272,117 @@ st.markdown("""
 # Main content container
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
-# Search functionality
+# Search and AI section side by side
 st.markdown('<div class="search-section">', unsafe_allow_html=True)
-st.markdown("### 🔍 Search Apps")
-search_query = st.text_input("Type to search apps by name or description...", placeholder="e.g., documentation, gallery, community", key="search", label_visibility="collapsed")
 
-# Show search results info
-if search_query:
-    st.markdown(f"🔍 **Search results for:** *{search_query}*")
-else:
-    st.markdown("📋 **Showing all apps** - Use the search box above to filter")
+# Create two columns for search and AI
+search_col, ai_col = st.columns([2, 1])
+
+with search_col:
+    st.markdown("### 🔍 Search Apps")
+    search_query = st.text_input("Type to search apps by name or description...", placeholder="e.g., documentation, gallery, community", key="search", label_visibility="collapsed")
+    
+    # Show search results info
+    if search_query:
+        st.markdown(f"🔍 **Search results for:** *{search_query}*")
+    else:
+        st.markdown("📋 **Showing all apps** - Use the search box above to filter")
+
+with ai_col:
+    st.markdown("### 🤖 AI Assistant")
+    if st.button("💬 Launch AI Chat", key="ai_chat_top", use_container_width=True):
+        if "ai_chat_active" not in st.session_state:
+            st.session_state.ai_chat_active = True
+        else:
+            st.session_state.ai_chat_active = not st.session_state.ai_chat_active
+
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Display AI Chat if activated
+if st.session_state.get("ai_chat_active", False):
+    st.markdown("---")
+    st.markdown("### 🤖 Quantum AI Assistant")
+    
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    
+    # Display chat messages
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+    
+    # Chat input
+    if prompt := st.chat_input("Ask me about your data and analytics..."):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
+        # Generate assistant response
+        with st.chat_message("assistant"):
+            response = f"Thank you for your question: '{prompt}'. I'm here to help you explore your data, understand analytics, and navigate the Quantum Discover platform. In a full implementation, I would connect to advanced AI services to provide detailed insights about your specific datasets and business metrics."
+            st.markdown(response)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    if st.button("❌ Close AI Chat", key="close_ai"):
+        st.session_state.ai_chat_active = False
+        st.rerun()
+    
+    st.markdown("---")
+
+# Tableau Dashboards Section
+st.markdown('<h2 class="section-header">📊 Tableau Analytics Hub</h2>', unsafe_allow_html=True)
+
+# Tableau dashboard cards
+tableau_dashboards = [
+    {
+        "title": "Executive Dashboard",
+        "description": "High-level KPIs and business metrics overview",
+        "icon": "📈",
+        "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/RegionalSampleWorkbook/Storms"
+    },
+    {
+        "title": "Sales Performance",
+        "description": "Detailed sales analytics and forecasting",
+        "icon": "🎯",
+        "url": "https://public.tableau.com/app/profile/tableau.public.admin.user/viz/SuperstoreSample/Overview"
+    },
+    {
+        "title": "Financial Analytics",
+        "description": "Revenue, profit, and financial trend analysis",
+        "icon": "💰",
+        "url": "https://public.tableau.com/gallery"
+    }
+]
+
+# Create tableau dashboard grid
+st.markdown('<div class="app-row">', unsafe_allow_html=True)
+tableau_cols = st.columns(3)
+for i, dashboard in enumerate(tableau_dashboards):
+    with tableau_cols[i]:
+        st.markdown(f"""
+        <div class="app-card">
+            <div class="app-icon">{dashboard['icon']}</div>
+            <div class="app-title">{dashboard['title']}</div>
+            <div class="app-description">{dashboard['description']}</div>
+            <a href="{dashboard['url']}" target="_blank" class="launch-button">View Dashboard</a>
+        </div>
+        """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Sample metrics for Tableau section
+st.markdown("#### Key Business Metrics")
+metric_cols = st.columns(4)
+
+with metric_cols[0]:
+    st.metric("Revenue", "$2.5M", "12%")
+with metric_cols[1]:
+    st.metric("Active Users", "15,432", "8%") 
+with metric_cols[2]:
+    st.metric("Conversion Rate", "3.2%", "0.5%")
+with metric_cols[3]:
+    st.metric("Satisfaction", "4.7/5", "0.2")
 
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
@@ -302,10 +402,10 @@ featured_apps = [
         "url": "https://streamlit.io/gallery"
     },
     {
-        "title": "30 Days Challenge",
-        "description": "Learn Streamlit in 30 days with daily tutorials",
-        "icon": "📚",
-        "url": "https://30days.streamlit.app/"
+        "title": "ML Playground",
+        "description": "Interactive machine learning model explorer",
+        "icon": "🤖",
+        "url": "https://share.streamlit.io/streamlit/example-app-iris-ml-app/main/iris-ml-app.py"
     }
 ]
 
@@ -416,74 +516,6 @@ else:
                 </div>
                 """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
-# AI Chat Section (if activated)
-if st.button("🤖 Launch AI Assistant", key="ai_chat"):
-    st.markdown("---")
-    st.markdown("### 🤖 Quantum AI Assistant")
-    
-    # Initialize chat history
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-    
-    # Display chat messages
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-    
-    # Chat input
-    if prompt := st.chat_input("Ask me about your data and analytics..."):
-        # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
-        # Generate assistant response
-        with st.chat_message("assistant"):
-            response = f"Thank you for your question: '{prompt}'. I'm here to help you explore your data, understand analytics, and navigate the Quantum Discover platform. In a full implementation, I would connect to advanced AI services to provide detailed insights about your specific datasets and business metrics."
-            st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-
-# Tableau Dashboard Section
-if st.button("📊 Open Tableau Dashboards", key="tableau"):
-    st.markdown("---")
-    st.markdown("### 📊 Tableau Analytics Hub")
-    
-    # Create dashboard preview cards
-    dashboard_cols = st.columns(2)
-    
-    with dashboard_cols[0]:
-        st.markdown("""
-        <div class="app-card">
-            <div class="app-icon">📈</div>
-            <div class="app-title">Executive Dashboard</div>
-            <div class="app-description">High-level KPIs and business metrics overview</div>
-            <a href="https://public.tableau.com/app/profile/tableau.public.admin.user/viz/RegionalSampleWorkbook/Storms" target="_blank" class="launch-button">View Dashboard</a>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with dashboard_cols[1]:
-        st.markdown("""
-        <div class="app-card">
-            <div class="app-icon">🎯</div>
-            <div class="app-title">Sales Performance</div>
-            <div class="app-description">Detailed sales analytics and forecasting</div>
-            <a href="https://public.tableau.com/app/profile/tableau.public.admin.user/viz/SuperstoreSample/Overview" target="_blank" class="launch-button">View Dashboard</a>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Sample metrics
-    st.markdown("#### Key Metrics")
-    metric_cols = st.columns(4)
-    
-    with metric_cols[0]:
-        st.metric("Revenue", "$2.5M", "12%")
-    with metric_cols[1]:
-        st.metric("Active Users", "15,432", "8%") 
-    with metric_cols[2]:
-        st.metric("Conversion Rate", "3.2%", "0.5%")
-    with metric_cols[3]:
-        st.metric("Satisfaction", "4.7/5", "0.2")
 
 # Close main content container
 st.markdown('</div>', unsafe_allow_html=True)
