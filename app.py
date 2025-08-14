@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
@@ -90,8 +91,8 @@ st.markdown("""
     
     /* Main content with top margin and side padding */
     .main-content {
-        margin-top: 120px;
-        padding: 3rem;
+        margin-top: 100px;
+        padding: 1.5rem 3rem 3rem 3rem;
         max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
@@ -229,6 +230,60 @@ st.markdown("""
     .app-row {
         margin-bottom: 2rem;
     }
+    
+    /* Embedded iframe viewer */
+    .iframe-container {
+        width: 100%;
+        height: 600px;
+        border: 2px solid #ED008C;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 2rem 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .iframe-header {
+        background: #ED008C;
+        color: white;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .close-iframe {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 3px;
+    }
+    
+    .close-iframe:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    
+    /* Style Streamlit buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #ED008C, #C70077);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #C70077, #A3005F);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(237, 0, 140, 0.3);
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -246,6 +301,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Initialize session state for iframe
+if 'show_iframe' not in st.session_state:
+    st.session_state.show_iframe = False
+if 'iframe_url' not in st.session_state:
+    st.session_state.iframe_url = ""
+if 'iframe_title' not in st.session_state:
+    st.session_state.iframe_title = ""
+
 # Main content container
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
@@ -260,6 +323,27 @@ if search_query:
 else:
     st.markdown("📋 **Showing all apps** - Use the search box above to filter")
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Display iframe if requested
+if st.session_state.show_iframe:
+    st.markdown(f"""
+    <div class="iframe-container">
+        <div class="iframe-header">
+            <span>📱 {st.session_state.iframe_title}</span>
+            <span>🔗 Embedded Viewer</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Close iframe button
+    if st.button("❌ Close Embedded Viewer", key="close_iframe"):
+        st.session_state.show_iframe = False
+        st.rerun()
+    
+    # Display the iframe
+    components.iframe(st.session_state.iframe_url, height=600, scrolling=True)
+    
+    st.markdown("---")
 
 # Featured Apps Section
 st.markdown('<h2 class="section-header">Featured Apps</h2>', unsafe_allow_html=True)
@@ -349,9 +433,15 @@ if search_query:
                             <div class="app-icon">{app['icon']}</div>
                             <div class="app-title">{app['title']}</div>
                             <div class="app-description">{app['description']}</div>
-                            <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
                         </div>
                         """, unsafe_allow_html=True)
+                        
+                        # Use Streamlit button instead of HTML link
+                        if st.button(f"Launch {app['title']}", key=f"search_{i}_{j}"):
+                            st.session_state.show_iframe = True
+                            st.session_state.iframe_url = app['url']
+                            st.session_state.iframe_title = app['title']
+                            st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
     else:
         st.markdown("### ❌ No apps found matching your search")
@@ -370,9 +460,15 @@ else:
                 <div class="app-icon">{app['icon']}</div>
                 <div class="app-title">{app['title']}</div>
                 <div class="app-description">{app['description']}</div>
-                <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
             </div>
             """, unsafe_allow_html=True)
+            
+            # Use Streamlit button instead of HTML link
+            if st.button(f"Launch {app['title']}", key=f"featured_{i}"):
+                st.session_state.show_iframe = True
+                st.session_state.iframe_url = app['url']
+                st.session_state.iframe_title = app['title']
+                st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
     # All Apps Section (when not searching)
@@ -389,9 +485,15 @@ else:
                     <div class="app-icon">{app['icon']}</div>
                     <div class="app-title">{app['title']}</div>
                     <div class="app-description">{app['description']}</div>
-                    <a href="{app['url']}" target="_blank" class="launch-button">Launch</a>
                 </div>
                 """, unsafe_allow_html=True)
+                
+                # Use Streamlit button instead of HTML link
+                if st.button(f"Launch {app['title']}", key=f"all_{i}_{j}"):
+                    st.session_state.show_iframe = True
+                    st.session_state.iframe_url = app['url']
+                    st.session_state.iframe_title = app['title']
+                    st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
 # AI Chat Section (if activated)
