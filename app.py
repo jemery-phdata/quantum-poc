@@ -307,27 +307,44 @@ if st.session_state.get("ai_chat_active", False):
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    # Display chat messages
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    # Chat input using regular text input (stays in place)
+    chat_input_col, send_col, close_col = st.columns([3, 1, 1])
     
-    # Chat input
-    if prompt := st.chat_input("Ask me about your data and analytics..."):
+    with chat_input_col:
+        user_input = st.text_input("Ask me about your data and analytics...", key="chat_text_input", label_visibility="collapsed")
+    
+    with send_col:
+        send_button = st.button("Send", key="send_chat", use_container_width=True)
+    
+    with close_col:
+        if st.button("❌ Close", key="close_ai", use_container_width=True):
+            st.session_state.ai_chat_active = False
+            st.rerun()
+    
+    # Process chat input
+    if send_button and user_input:
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+        st.session_state.messages.append({"role": "user", "content": user_input})
         
         # Generate assistant response
-        with st.chat_message("assistant"):
-            response = f"Thank you for your question: '{prompt}'. I'm here to help you explore your data, understand analytics, and navigate the Quantum Discover platform. In a full implementation, I would connect to advanced AI services to provide detailed insights about your specific datasets and business metrics."
-            st.markdown(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-    
-    if st.button("❌ Close AI Chat", key="close_ai"):
-        st.session_state.ai_chat_active = False
+        response = f"Thank you for your question: '{user_input}'. I'm here to help you explore your data, understand analytics, and navigate the Quantum Discover platform. In a full implementation, I would connect to advanced AI services to provide detailed insights about your specific datasets and business metrics."
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        
+        # Clear input and rerun to show new messages
         st.rerun()
+    
+    # Display chat messages in a container
+    if st.session_state.messages:
+        st.markdown("#### Chat History")
+        chat_container = st.container()
+        with chat_container:
+            for i, message in enumerate(st.session_state.messages):
+                if message["role"] == "user":
+                    st.markdown(f"**👤 You:** {message['content']}")
+                else:
+                    st.markdown(f"**🤖 Assistant:** {message['content']}")
+                if i < len(st.session_state.messages) - 1:
+                    st.markdown("---")
     
     st.markdown("---")
 
