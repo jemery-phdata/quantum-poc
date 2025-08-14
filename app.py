@@ -298,7 +298,7 @@ with ai_col:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Display AI Chat if activated
+# Display AI Chat if activated (right below search section)
 if st.session_state.get("ai_chat_active", False):
     st.markdown("---")
     st.markdown("### 🤖 Quantum AI Assistant")
