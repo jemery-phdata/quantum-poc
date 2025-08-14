@@ -349,10 +349,10 @@ featured_apps = [
         "url": "https://streamlit.io/gallery"
     },
     {
-        "title": "ML Playground",
-        "description": "Interactive machine learning model explorer",
-        "icon": "🤖",
-        "url": "https://share.streamlit.io/streamlit/example-app-iris-ml-app/main/iris-ml-app.py"
+        "title": "PrettyMapp",
+        "description": "Create beautiful customizable maps from OpenStreetMap data",
+        "icon": "🗺️",
+        "url": "https://prettymapp.streamlit.app/?ref=streamlit-io-gallery-favorites"
     }
 ]
 
