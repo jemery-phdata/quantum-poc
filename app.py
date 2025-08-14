@@ -63,7 +63,7 @@ st.markdown("""
     }
     
     .header-title {
-        color: white;
+        color: white !important;
         font-size: 2rem;
         font-weight: 700;
         margin: 0;
@@ -74,7 +74,7 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 15px;
-        color: white;
+        color: white !important;
         font-weight: 500;
         font-size: 1.1rem;
     }
@@ -231,11 +231,11 @@ st.markdown("""
     /* Style launch buttons */
     .launch-button {
         background: linear-gradient(135deg, #ED008C, #C70077);
-        color: white;
+        color: white !important;
         border: none;
         border-radius: 6px;
         padding: 0.5rem 1rem;
-        font-weight: 500;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
         text-decoration: none;
@@ -248,7 +248,7 @@ st.markdown("""
     .launch-button:hover {
         background: linear-gradient(135deg, #C70077, #A3005F);
         text-decoration: none;
-        color: white;
+        color: white !important;
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(237, 0, 140, 0.3);
     }
