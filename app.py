@@ -51,8 +51,8 @@ st.markdown("""
     /* Custom header bar */
     .custom-header {
         background: #ED008C;
-        padding: 1.5rem 4rem;
-        margin: -1rem -1rem 3rem -1rem;
+        padding: 1rem 4rem;
+        margin: -1rem -1rem 1rem -1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -61,7 +61,7 @@ st.markdown("""
         left: 0;
         right: 0;
         z-index: 999;
-        height: 90px;
+        height: 70px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
@@ -91,8 +91,8 @@ st.markdown("""
     
     /* Main content with top margin and side padding */
     .main-content {
-        margin-top: 100px;
-        padding: 1.5rem 3rem 3rem 3rem;
+        margin-top: 80px;
+        padding: 0.5rem 3rem 3rem 3rem;
         max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
@@ -231,41 +231,6 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* Embedded iframe viewer */
-    .iframe-container {
-        width: 100%;
-        height: 600px;
-        border: 2px solid #ED008C;
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 2rem 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    .iframe-header {
-        background: #ED008C;
-        color: white;
-        padding: 0.75rem 1rem;
-        font-weight: 600;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .close-iframe {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-        padding: 0.25rem;
-        border-radius: 3px;
-    }
-    
-    .close-iframe:hover {
-        background: rgba(255,255,255,0.2);
-    }
-    
     /* Style Streamlit buttons */
     .stButton > button {
         background: linear-gradient(135deg, #ED008C, #C70077);
@@ -324,24 +289,27 @@ else:
     st.markdown("📋 **Showing all apps** - Use the search box above to filter")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Display iframe if requested
+# Display app launch notification if requested
 if st.session_state.show_iframe:
+    st.success(f"🚀 **{st.session_state.iframe_title}** is opening in a new tab!")
+    st.info("💡 **Tip:** If the app didn't open, your browser may have blocked the popup. Check your popup settings or click the link below.")
+    
+    # Provide direct link as backup
     st.markdown(f"""
-    <div class="iframe-container">
-        <div class="iframe-header">
-            <span>📱 {st.session_state.iframe_title}</span>
-            <span>🔗 Embedded Viewer</span>
-        </div>
-    </div>
+    **🔗 Direct Link:** [{st.session_state.iframe_title}]({st.session_state.iframe_url})
+    """)
+    
+    # Auto-open in new tab using JavaScript
+    st.markdown(f"""
+    <script>
+        window.open('{st.session_state.iframe_url}', '_blank');
+    </script>
     """, unsafe_allow_html=True)
     
-    # Close iframe button
-    if st.button("❌ Close Embedded Viewer", key="close_iframe"):
+    # Reset the state
+    if st.button("✅ Got it! Close this message", key="close_message"):
         st.session_state.show_iframe = False
         st.rerun()
-    
-    # Display the iframe
-    components.iframe(st.session_state.iframe_url, height=600, scrolling=True)
     
     st.markdown("---")
 
